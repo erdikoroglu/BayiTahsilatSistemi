@@ -17,11 +17,34 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('tax_number')->unique();
+            $table->string('logo_code')->unique();
+            $table->string('address')->nullable();
+            $table->string('pay_logo')->nullable();
+            $table->string('receipt_logo')->nullable();
+            $table->string('company_name');
+            $table->boolean('admin')->default(false);
+            $table->boolean('installment')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->uuid()->default(Str::uuid())->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });
+
+        $anka = new \App\Models\User();
+        $anka->name = "Oğuzhan Çoşkun";
+        $anka->email = "tahsilat1@ankamuh.com";
+        $anka->phone = "0216 616 1616";
+        $anka->company_name = "Anka Mühendislik";
+        $anka->tax_number = "0690342046";
+        $anka->admin = true;
+        $anka->installment = true;
+        $anka->logo_code = "000.000.000";
+        $anka->address = "Ferhatpaşa / Ataşehir";
+        $anka->password = bcrypt("123123123");
+        $anka->save();
     }
 
     /**
