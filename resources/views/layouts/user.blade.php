@@ -5,6 +5,14 @@
 <!--begin::User account menu-->
 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
     <div class="menu-item px-5">
-        <a href="" class="menu-link px-5">Sign Out</a>
+        <a onclick="logout()" class="menu-link px-5 cursor-pointer">Çıkış Yap</a>
     </div>
+    <form action="{{ route('logout') }}" class="d-none" id="logout" method="post">
+        @csrf
+    </form>
+    <script>
+        function logout() {
+            $("#logout").submit();
+        }
+    </script>
 </div>

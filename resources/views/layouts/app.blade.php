@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -51,6 +51,9 @@
         <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
             <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                 <div class="d-flex flex-column flex-column-fluid">
+                    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+
+                    </div>
                     <div id="kt_app_content" class="app-content flex-column-fluid">
                         <div id="kt_app_content_container" class="app-container container-xxl">
                             @yield("content")
@@ -96,6 +99,55 @@
 
 <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toastr-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
 
+@if(session()->has('success'))
+    <script>
+        toastr.success("{{ session()->get('success') }}");
+    </script>
+@endif
+@if(session()->has('error'))
+    <script>
+        toastr.error("{{ session()->get('error') }}");
+    </script>
+@endif
+<script>
+    function clipboard(id) {
+        var copyText = document.getElementById('link_val_' + id);
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+        $("#link_" + id).text("Kopyalandı");
+        setTimeout(function () {
+            $("#link_" + id).text("Kopyala");
+        },2000);
+
+    }
+</script>
+@yield('scripts')
 </body>
 </html>

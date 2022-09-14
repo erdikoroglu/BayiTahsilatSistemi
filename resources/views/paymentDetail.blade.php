@@ -81,7 +81,7 @@
             <main class="col-lg-9" id="purchase-main" role="main">
                 <!-- code check-->
                 <div class="main__row main__row--active">
-                    <form action="{{ route('step2',$user->uuid) }}" method="POST">
+                    <form action="" method="POST">
 
                         @if($errors->any())
                             @foreach($errors->all() as $error)
@@ -89,49 +89,47 @@
                             @endforeach
                         @endif
                         @csrf
-                        <h3>Kişisel Bilgileriniz</h3>
+                        <h3>Ödeme Bilgileriniz</h3>
                         <hr>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Ad Soyad</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="text" name="name" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Ödeme Yapan olarak kendi bilgilerinizi girin.</div>
+                            <style>
+                                .fs-2 {
+                                    font-size: 2rem !important;
+                                    font-weight: bold !important;
+                                }
+                            </style>
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <label class="col-form-label" for="">Ödeme Yapmak İstediğiniz Tutar</label>
+                                <input class="form-control text-center fs-2" id="amount" type="text" name="amount" title="" required="" placeholder="0.00">
+                            </div>
+                            <div class="col-12">
+                                <label class="col-form-label" for="">Kart Üzerindeki İsim</label>
+                                <input class="form-control" id="" type="text" name="cc_owner" title="" required="" value="">
+                            </div>
+                            <div class="col-12">
+                                <label class="col-form-label" for="">Kart Numaranız</label>
+                                <input class="form-control" id="cd" type="text" name="card_number" title="" required="" value="">
+                            </div>
+                            <div class="col-4">
+                                <label class="col-form-label" for="">SKT. AY</label>
+                                <input class="form-control" id="month" type="text" name="expiry_month" title="" required="" maxlength="2" minlength="2" value="">
+                            </div>
+                            <div class="col-4">
+                                <label class="col-form-label" for="">SKT. YIL</label>
+                                <input class="form-control" id="year" type="text" name="expiry_year" title="" required="" maxlength="2" minlength="2" value="">
+                            </div>
+                            <div class="col-4">
+                                <label class="col-form-label" for="">CVV Numarası</label>
+                                <input class="form-control" id="cvv" type="text" name="cvv" title="" required="" maxlength="3" minlength="3" value="">
                             </div>
                         </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">E-Posta</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="email" name="email" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Tahsilat Makbuzu Bu Adrese Gönderilecek.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Firma Adı</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="text" name="company_name" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Firmanızın Resmi Ünvanını Girin.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Vergi Numarası</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="text" name="tax_number" title="" required="" maxlength="11" minlength="10" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Firmanızın Vergi Numarasını Girin</div>
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Telefon Numarası</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="phone" type="text" name="phone" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Telefon Numranızı Girin</div>
-                            </div>
-                        </div>
+
                         <div class="button__rectangle d-flex justify-content-end align-items-baseline">
                             <div class="input__information input__information--danger input__information--triangleRight d-none">
                                 <span class="input__information__icon--mr21"><em class="fas fa-exclamation-triangle"></em></span>
                                 <span class="input__information__text pnrCodeCheck__error"></span>
                             </div>
-                            <button id="pnrEntryButton" class="button__rectangle__button button__rectangle__button--default next-step-btn ml-3">DEVAM</button>
+                            <button id="pnrEntryButton" class="button__rectangle__button button__rectangle__button--default next-step-btn ml-3">ÖDE</button>
                         </div>
                     </form>
                 </div>
@@ -171,8 +169,18 @@
             phoneMax: 'Cep Telefonu numaranız en fazla 15 haneli olabilir.',
         });
         Inputmask({
-            "mask" : "0 999 999 9999"
-        }).mask("#phone");
+            "mask" : "999"
+        }).mask("#cvv");
+        Inputmask({
+            "mask" : "99"
+        }).mask("#year");
+        Inputmask({
+            "mask" : "99"
+        }).mask("#month");
+        Inputmask({
+            "mask" : "9999 9999 9999 9999"
+        }).mask("#cd");
+        Inputmask("decimal").mask("#amount");
     });
 
 </script>
