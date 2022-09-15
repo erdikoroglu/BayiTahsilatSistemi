@@ -62,9 +62,15 @@ class FrontController extends Controller
         $pay = new Pay();
         $data = $pay->postData($request,$process);
 
+        $error = null;
+        if ($data["card_type"] == null) {
+            $data["card_type"] = "bonus";
+            $data["installment_count"] = "0";
+            $error = "Girdiğiniz kart numarası tanınamadığı için taksitli çekim yapamazsınız. Kart bilgileriniz doğru ise tek çekim olarak işlem yapılacaktır";
+        }
         $user = $process->company;
 
-       return view('pay.step3',compact('pay','data','user','process'));
+       return view('pay.step3',compact('pay','data','user','process'))->with('error',$error);
     }
 
     public function fail(Request $request, Process $process)

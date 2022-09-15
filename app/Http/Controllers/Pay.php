@@ -32,6 +32,8 @@ class Pay implements IPaytr
 
         $request = Http::asForm()->post(self::bin_url,$post_vals)->body();
         $type = json_decode($request,true);
+        if (!isset($type["brand"]))
+            return $type["brand"] = null;
         return $type["brand"];
     }
 

@@ -40,3 +40,5 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function (){
     Route::get('process/success',[\App\Http\Controllers\ProcessController::class,'success'])->name('process.success');
 });
 
+
+
