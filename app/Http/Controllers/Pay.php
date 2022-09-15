@@ -12,12 +12,12 @@ class Pay implements IPaytr
 
     public function getMerchantOkUrl(Process $process)
     {
-        return "http://127.0.0.1:8000/success/" . $process->uuid;
+        return "https://pay.ankamuh.com/success/" . $process->uuid;
     }
 
     public function getMerchantFailUrl(Process $process)
     {
-        return "http://127.0.0.1:8000/fail/" . $process->uuid;
+        return "https://pay.ankamuh.com/fail/" . $process->uuid;
     }
 
     public function getCardBin($cardNumber)

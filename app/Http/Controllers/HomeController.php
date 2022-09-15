@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Process;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -24,9 +26,19 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        if ($request->user()->admin)
+        {
+            $total = Process::where('status',2)->sum('amount');
+            $today_total = Process::where('status',2)->where('updated_at',Carbon::today())->sum('amount');
+            $last_process = Process::limit(5)->orderByDesc('id')->get();
+        } else {
+            $total = Process::where('status',2)->where('users_id',$request->user()->id)->sum('amount');
+            $today_total = Process::where('status',2)->where('updated_at',Carbon::today())->where('users_id',$request->user()->id)->sum('amount');
+            $last_process = Process::limit(5)->orderByDesc('id')->where('users_id',$request->user()->id)->get();
+        }
+        return view('home',compact('total','today_total','last_process'));
     }
 
     public function profile()

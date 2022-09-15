@@ -15,7 +15,7 @@ interface IPaytr
     public const non_3d = 0;
     public const payment_type = "card";
     public const client_lang = "tr";
-    public const debug_on  = 1;
+    public const debug_on  = 0;
     public const post_url = "https://www.paytr.com/odeme";
     public const bin_url = "https://www.paytr.com/odeme/api/bin-detail";
     

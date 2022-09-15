@@ -27,7 +27,7 @@
     </div>
     <nav class="navbar navbar-expand">
         <a class="brand" href="#">
-            <img src="{{ storage_link($user->pay_logo) }}" alt="{{ $user->company_name }}">
+            <img src="{{ asset('assets/media/logos/anka_logo.png') }}" alt="">
         </a>
         <span class="navbar__brandTitle" href="#">
             Tahsilat Sayfası
@@ -81,59 +81,20 @@
             <main class="col-lg-9" id="purchase-main" role="main">
                 <!-- code check-->
                 <div class="main__row main__row--active">
-                    <form action="{{ route('step2',$user->uuid) }}" method="POST">
-
-                        @if($errors->any())
-                            @foreach($errors->all() as $error)
-                                <span class="alert alert-danger">{{ $error }}</span>
-                            @endforeach
-                        @endif
-                        @csrf
-                        <h3>Kişisel Bilgileriniz</h3>
-                        <hr>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Ad Soyad</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="text" name="name" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Ödeme Yapan olarak kendi bilgilerinizi girin.</div>
-                            </div>
+                    <div class="form-group row align-items-center">
+                        <label class="col-sm-3 col-form-label" for="">Kod Girin</label>
+                        <div class="col-sm-9 d-flex align-items-center">
+                            <input class="form-control mr-3" id="user_code" type="text" title="" required="" value="">
+                            <div class="input__information input__information--triangleLeft input__information--softGreen">Ödeme Yapmak istediğiniz firmanın özel kodunu giriniz.</div>
                         </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">E-Posta</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="email" name="email" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Tahsilat Makbuzu Bu Adrese Gönderilecek.</div>
-                            </div>
+                    </div>
+                    <div class="button__rectangle d-flex justify-content-end align-items-baseline">
+                        <div class="input__information input__information--danger input__information--triangleRight d-none">
+                            <span class="input__information__icon--mr21"><em class="fas fa-exclamation-triangle"></em></span>
+                            <span class="input__information__text pnrCodeCheck__error"></span>
                         </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Firma Adı</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="text" name="company_name" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Firmanızın Resmi Ünvanını Girin.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Vergi Numarası</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="" type="text" name="tax_number" title="" required="" maxlength="11" minlength="10" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Firmanızın Vergi Numarasını Girin</div>
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center">
-                            <label class="col-sm-3 col-form-label" for="">Telefon Numarası</label>
-                            <div class="col-sm-9 d-flex align-items-center">
-                                <input class="form-control mr-3" id="phone" type="text" name="phone" title="" required="" value="">
-                                <div class="input__information input__information--triangleLeft input__information--softGreen">Telefon Numranızı Girin</div>
-                            </div>
-                        </div>
-                        <div class="button__rectangle d-flex justify-content-end align-items-baseline">
-                            <div class="input__information input__information--danger input__information--triangleRight d-none">
-                                <span class="input__information__icon--mr21"><em class="fas fa-exclamation-triangle"></em></span>
-                                <span class="input__information__text pnrCodeCheck__error"></span>
-                            </div>
-                            <button id="pnrEntryButton" class="button__rectangle__button button__rectangle__button--default next-step-btn ml-3">DEVAM</button>
-                        </div>
-                    </form>
+                        <button id="pnrEntryButton" type="button" class="button__rectangle__button button__rectangle__button--default next-step-btn ml-3">DEVAM</button>
+                    </div>
                 </div>
             </main>
         </div>
@@ -165,15 +126,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js" integrity="sha512-8pHNiqTlsrRjVD4A/3va++W1sMbUHwWxxRPWNyVlql3T+Hgfd81Qc6FC5WMXDC+tSauxxzp1tgiAvSKFu1qIlA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        app.initializeMessages({
-            required: 'Eksik bilgi girdiniz.',
-            phoneMin: 'Cep Telefonu numaranızı kontrol ediniz.',
-            phoneMax: 'Cep Telefonu numaranız en fazla 15 haneli olabilir.',
-        });
-        Inputmask({
-            "mask" : "0 999 999 9999"
-        }).mask("#phone");
-    });
+        $("#pnrEntryButton").click(function () {
+            window.location.href = "https://pay.ankamuh.com/" + $("#user_code").val();
+        })
 
+    });
 </script>
 </body>

@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/',function (){
-    $user = \App\Models\User::first();
-    $process = \App\Models\Process::first();
-    return view('paymentDetail',compact('user','process'));
+    return view('welcome');
 });
+
 Route::get('/login',function (){
     return view('auth.login');
 });
@@ -29,11 +29,14 @@ Route::get('/{user:uuid}',[\App\Http\Controllers\FrontController::class,'index']
 Route::post('/{user:uuid}/process',[\App\Http\Controllers\FrontController::class,'paymentDetail'])->name('step2');
 Route::post('/{process:uuid}',[\App\Http\Controllers\FrontController::class,'payment'])->name('payment');
 Route::post('/{process:uuid}/pay',[\App\Http\Controllers\FrontController::class,'pay'])->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)->name('pay');
-
+Route::any('pay/result',[\App\Http\Controllers\FrontController::class,'result'])->name('pay.result')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function (){
     Route::get('/home',[\App\Http\Controllers\HomeController::class,'index'])->name('dashboard');
     Route::get('/profile',[\App\Http\Controllers\HomeController::class,'profile'])->name('profile');
     Route::post('/profile/{user}',[\App\Http\Controllers\HomeController::class,'updateProfile'])->name('update-profile');
     Route::resource('users',\App\Http\Controllers\UserController::class);
+    Route::get('process/fails',[\App\Http\Controllers\ProcessController::class,'fail'])->name('process.fails');
+    Route::get('process/pending',[\App\Http\Controllers\ProcessController::class,'pending'])->name('process.pending');
+    Route::get('process/success',[\App\Http\Controllers\ProcessController::class,'success'])->name('process.success');
 });
 

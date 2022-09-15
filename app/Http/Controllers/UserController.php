@@ -15,6 +15,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
+    public function __construct(Request $request)
+    {
+        $this->middleware('admin');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -67,8 +73,9 @@ class UserController extends Controller
             'company_name' => 'required',
         ]);
 
-        $data = $request->except('_token');
+        $data = $request->except('_token','password');
         $data["uuid"] = Uuid::uuid4();
+        $data["password"] = bcrypt($request->post('password'));
         $user = new User($data);
         try {
             $user->save();

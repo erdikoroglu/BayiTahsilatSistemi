@@ -5,7 +5,7 @@
     <base href="{{ url()->current() }}"/>
     <title>Tahsilat Makbuzu</title>
     <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
     <!--begin::Fonts-->
@@ -76,18 +76,6 @@
                                                     <div style="font-family:Arial,Helvetica,sans-serif">{{ $process->amount }} TL</div>
                                                     <!--end:Total-->
                                                 </div>
-                                                <!--end:Item-->
-                                                <!--begin:Item-->
-                                                <div style="display:flex; justify-content: space-between; color:#7E8299; font-size: 14px; font-weight:500;">
-                                                    <!--begin:Description-->
-                                                    <div style="font-family:Arial,Helvetica,sans-serif">vergi (0%)</div>
-                                                    <!--end:Description-->
-                                                    <!--begin:Total-->
-                                                    <div style="font-family:Arial,Helvetica,sans-serif">0.00 TL</div>
-                                                    <!--end:Total-->
-                                                </div>
-                                                <!--end:Item-->
-                                                <!--begin::Separator-->
                                                 <div class="separator separator-dashed" style="margin:15px 0"></div>
                                                 <!--end::Separator-->
                                                 <!--begin:Item-->

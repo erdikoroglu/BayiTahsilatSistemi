@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AnkaSuccess;
+use App\Mail\UserSuccess;
 use App\Models\Process;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 
 
 class FrontController extends Controller
@@ -50,8 +54,6 @@ class FrontController extends Controller
         return view('pay.step2',compact('process','user'));
     }
 
-    /**
-     */
     public function pay(Request $request, Process $process)
     {
         $process->amount = $request->post('amount');
@@ -77,12 +79,48 @@ class FrontController extends Controller
         $process->status = 2;
         $process->save();
         $user = $process->company;
-
         return view('paymentDetail',compact('process','user'));
     }
 
     public function pdf(Process $process)
     {
-        return PDF::loadFile(route('success',$process->uuid))->inline('tahsilat_makbuzu.pdf');
+        View::share('process',$process);
+        $pdf = PDF::loadView('pay.pdf',$process);
+        $pdf->setPaper('A5');
+        return $pdf->inline($process->uuid . '-tahsilat_makbuzu.pdf');
+    }
+
+    public function result(Request $request)
+    {
+
+        $pay = new Pay();
+        $hash = base64_encode( hash_hmac('sha256',
+            $request["merchant_oid"]
+            .$pay::merchant_salt
+            .$request["status"]
+            .$request["total_amount"],
+            $pay::merchant_key,
+            true)
+        );
+
+        $process = Process::where('uuid',$request["merchant_oid"])->first();
+
+        if($hash != $request["hash"])
+            die('Bankadan gelen cevap ile sistemlerimizdeki kayı uyuşmuyor. Lütfen tahsilat yetkiliniz ile görüşün');
+
+        if ($request["status"] == "success")
+        {
+            if ($process->company->id != 1)
+                Mail::send(new UserSuccess($process));
+
+            Mail::send(new AnkaSuccess($process));
+            $process->status = 2;
+        } else {
+            $process->status = 3;
+        }
+        echo "OK";
+
+        $process->save();
+
     }
 }

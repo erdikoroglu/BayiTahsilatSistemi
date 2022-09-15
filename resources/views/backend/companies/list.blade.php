@@ -3,7 +3,10 @@
     Cari Listesi
 @endsection
 @section('content')
-    <x-card title="Cari Listesi" footer="" actions="">
+    <x-card title="Cari Listesi" footer="">
+        <x-slot:actions>
+            <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">Yeni Cari EKle</a>
+        </x-slot:actions>
         <table class="table align-middle table-row-dashed table-striped fs-6 gy-5" id="usersTable">
             <thead>
             <tr>
