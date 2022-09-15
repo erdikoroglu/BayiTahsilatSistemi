@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Process;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Uuid;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+
 
 class FrontController extends Controller
 {
     public function index(User $user)
     {
-        return view('welcome',compact('user'));
+        return view('pay.step1',compact('user'));
     }
 
     public function paymentDetail(User $user, Request $request)
@@ -44,9 +45,44 @@ class FrontController extends Controller
         $process->amount = 0.0;
         $process->status = 1;
         $process->users_id = $user->id;
-        $process->uuid = Uuid::uuid4();
+        $process->uuid = time();
+        $process->save();
+        return view('pay.step2',compact('process','user'));
+    }
+
+    /**
+     */
+    public function pay(Request $request, Process $process)
+    {
+        $process->amount = $request->post('amount');
         $process->save();
 
+        $pay = new Pay();
+        $data = $pay->postData($request,$process);
+
+        $user = $process->company;
+
+       return view('pay.step3',compact('pay','data','user','process'));
+    }
+
+    public function fail(Request $request, Process $process)
+    {
+        $process->status = 3;
+        $process->save();
+        return redirect()->route('step1',$process->company->uuid)->with('error',$request->fail_message);
+    }
+
+    public function success(Request $request, Process $process)
+    {
+        $process->status = 2;
+        $process->save();
+        $user = $process->company;
+
         return view('paymentDetail',compact('process','user'));
+    }
+
+    public function pdf(Process $process)
+    {
+        return PDF::loadFile(route('success',$process->uuid))->inline('tahsilat_makbuzu.pdf');
     }
 }

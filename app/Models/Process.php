@@ -22,4 +22,9 @@ class Process extends Model
         'amount',
         'status',
     ];
+
+    public function company(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(User::class,'id','users_id');
+    }
  }
