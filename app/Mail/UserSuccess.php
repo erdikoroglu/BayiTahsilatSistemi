@@ -32,7 +32,7 @@ class UserSuccess extends Mailable
     public function build()
     {
         return $this->from("pay@ankamuh.com", "Online Tahsilat Sistemi")
-            ->to("yazilim@ankamuh.com")
+            ->to($this->process->email)
             ->subject("Ödemeniz İçin Teşekkürler")
             ->view('mail.user_success');
     }

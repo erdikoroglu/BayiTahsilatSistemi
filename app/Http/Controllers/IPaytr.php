@@ -11,7 +11,7 @@ interface IPaytr
     public const merchant_key = "2CeSZTE6e7i9GgMr";
     public const merchant_salt = "AhPfEoib8hdf1ZbT";
     public const currency = "TL";
-    public const test_mode = 1;
+    public const test_mode = 0;
     public const non_3d = 0;
     public const payment_type = "card";
     public const client_lang = "tr";

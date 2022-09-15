@@ -33,7 +33,7 @@ class AnkaSuccess extends Mailable
     public function build()
     {
         return $this->from("pay@ankamuh.com", "Online Tahsilat Sistemi")
-            ->to("yazilim@ankamuh.com")
+            ->to("tahsilat1@ankamuh.com")
             ->subject("Yeni Tahsilat Gerçekleşti")
             ->view('mail.anka_success');
     }
